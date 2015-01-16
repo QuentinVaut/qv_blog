@@ -1,9 +1,12 @@
 <?php
+
 require_once('includes/connexion.inc.php');
 require_once('setting/setting.php');
 require_once('./includes/functions.php');
 include_once('includes/header.inc.php');
+require_once ('libs/Smarty.class.php');
 
+$smarty = new Smarty();
 
 /*
  * Créer les variables
@@ -31,13 +34,13 @@ if (isset($_POST['envoyer'])) {
     $mail = addcslashes($_POST['mail'], $charlist);
     $mdp = addcslashes($_POST['password'], $charlist);
 
-    $user = selectUser($mail, $mdp);
+    $user = selectUser($mail, $mdp, $bdd);
 
 
     if (isset($user) && $user['email'] == $mail && $user['mdp'] == $mdp) {
         $sid = md5($mail . time());
         $id = $user['id'];
-        updateUserSid($id, $sid);
+        updateUserSid($id, $sid, $bdd);
         setcookie("Connect", $sid, time() + 3600);
         $_SESSION['notification'] = "Connexion réussie";
         header('Location: index.php');
@@ -47,52 +50,16 @@ if (isset($_POST['envoyer'])) {
         header('Location: connexion.php');
     }
 } else {
-    ?>
-    <?php
+
     if (isset($_SESSION['notification'])) {
         echo $_SESSION['notification'];
         session_unset($_SESSION['notification']);
     }
-    ?>
-    <div class="row">
+}
 
-        <div class="span8">
-            <h1>Connexion</h1>
-            <p>Saississez vos informations</p>
-            <form  method="POST" action="connexion.php" enctype="multipart/form-data" id="form_article" name="form_article">
-                <div class="clearfix">
-                    <label for="mail">E-Mail</label>
-                    <div class="input">
-                        <input type='email' id="mail" name='mail' value=""/>
-                    </div>
+        $smarty->display('templates/connexion.tpl');
 
-                    <label for="password">Mot de passe</label>
-                    <div class="input">
-                        <input type='password' id="password" name='password' value=""/>
-                    </div>
-                    <div class="form-actions">
+include_once('includes/nav.inc.php');
+include_once('includes/footer.inc.php');
+?>
 
-                        <input type='submit' name="envoyer" value="Connexion" class='btn btn-large btn-primary'/>
-
-                    </div>
-
-                </div>
-            </form>
-        </div>
-        <?php
-    }
-    ?>
-
-
-
-    <?php include_once('includes/nav.inc.php') ?>
-</div>
-
-</div>
-
-<?php include_once('includes/footer.inc.php') ?>
-
-</div>
-
-</body>
-</html>

@@ -15,7 +15,7 @@ if (isset($connect) && $connect == 0) {
         $email = addslashes($_POST['mail']);
         $password = addslashes($_POST['password']);
         print_r($_POST);
-        addUsers($nom, $prenom, $email, $password);
+        addUsers($nom, $prenom, $email, $password, $bdd);
         $_SESSION['notification'] = "Inscription terminé";
         header('Location: index.php');
     }

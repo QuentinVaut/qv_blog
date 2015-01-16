@@ -17,17 +17,18 @@ if (isset($_GET['page'])) {
     $page_courante = intval($_GET['page']);
 }
 $nbArticlepPage = 2;
-$array_totalArticles = totalArticles($nbArticlepPage, $page_courante);
+$array_totalArticles = totalArticles($nbArticlepPage, $page_courante, $bdd);
 $total = intval($array_totalArticles[1]);
 $index = intval($array_totalArticles[0]);
 
-if (isset($_GET['rechercher'])) {
-    $articles = selectionRecherche($nbArticlepPage, $index, $_GET['recherche']);
+if (isset($_GET['rechercher']) && $_GET['rechercher']!= "") {
+    $articles = selectionRecherche($nbArticlepPage, $index, $_GET['recherche'], $bdd);
+    print_r($_GET['recherche']);
     $smarty->assign("articles", $articles);
     $count = count($articles);
     $total = $count;
 } else {
-    $articles = selection($nbArticlepPage, $index);
+    $articles = selection($nbArticlepPage, $index, $bdd);
     $smarty->assign("articles", $articles);
     $count = count($articles);
 }

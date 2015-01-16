@@ -1,33 +1,23 @@
 <?php
 session_start();
 require_once('setting/setting.php');
-require_once('./includes/functions.php');
+require_once('functions.php');
 
-define ("HOST","localhost");
-define ("PORT","3306");
-define ("NOM_db","u595678395_blog");
-define ("PASSWORD","");
-define ("USER","u595678395_blog");
-
-
-
-try
+if($bdd = mysqli_connect('localhost:3306', 'root', '', 'u595678395_blog'))
 {
-			$bdd = new PDO('mysql:host='.HOST.';dbname='.NOM_db, USER, PASSWORD);
-			$bdd -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-}
-catch(Exception $e)
-{
-        echo "Erreur dans la connexion $e";
-        
+    
+} else {
+    
+    echo "Erreur";
 }
 
 if (isset($_COOKIE['Connect'])) {
     $cookiesid = $_COOKIE['Connect'];
-    $usersid = selectSid($cookiesid);
+    $usersid = selectSid($cookiesid,$bdd);
     if ($cookiesid == $usersid['sid']) {
         $nom = $usersid['nom'];
         $prenom = $usersid['prenom'];
+        $mail = $usersid['email'];
         $connect = true;
     }
 } else {

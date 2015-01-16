@@ -2,14 +2,14 @@
     <h3>Menu</h3>
 
 
-    <form action="index.php" method="GET" enctype="multipart/form-data" id="search">
+    <form action="index.php" method="GET" enctype="multipart/form-data" id="search" onsubmit="control_form('recherche')">
         <div class="clearfix">
             <div class="input">
                 <input type="text" name="recherche" id="recherche" placeholder="Votre recherche"/>
             </div>
         </div>
         <div class="input">
-            <input type="submit" name="envoyer" value="rechercher" class="btn btn-mini btn-primary"/>
+            <input type="submit" name="rechercher" value="Rechercher" class="btn btn-mini btn-primary"/>
         </div>
 
     </form>
@@ -37,5 +37,5 @@
 
 </nav>
 </div>
-
+<script type="text/javascript" src="js/script.js"></script>
 </div>
