@@ -3,7 +3,7 @@ session_start();
 require_once('setting/setting.php');
 require_once('functions.php');
 
-if($bdd = mysqli_connect('localhost:3306', 'root', '', 'u595678395_blog'))
+if($bdd = mysqli_connect('localhost', 'u595678395_blog', '', 'u595678395_blog'))
 {
     
 } else {

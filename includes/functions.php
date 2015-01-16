@@ -15,29 +15,33 @@ function totalArticles($nbArticlesParPage, $pageCourante, $bdd) {
 function selection($articleParPage, $index, $bdd) {
     $requete = "SELECT id, titre, texte, DATE_FORMAT(date,'%d/%m/%Y') as date_fr FROM articles WHERE publie=1 ORDER BY id LIMIT $articleParPage OFFSET $index"; // Selectionne tout les articles publiés
     $exe = mysqli_query($bdd, $requete);
-     if (mysqli_num_rows($exe) >= 1) {
-        $result = mysqli_fetch_all($exe, MYSQLI_ASSOC) or die(mysqli_error($bdd));
-        return $result;
+    if (mysqli_num_rows($exe) >= 1) {
+        while ($result = mysqli_fetch_assoc($exe)) {
+            $resultats[] = $result; // On le rempli avec les résultats.
+        }
+        return $resultats;
     } else {
         return "Aucun article";
     }
-    $result = mysqli_fetch_all($exe, MYSQLI_ASSOC) or die(mysqli_error($bdd));
-    return $result;
 }
 
 function selectionRecherche($articleParPage, $index, $recherche, $bdd) {
     $requete = "SELECT id, titre, texte, DATE_FORMAT(date,'%d/%m/%Y') as date_fr FROM articles WHERE publie=1 " .
             "AND (titre LIKE '%$recherche%' OR texte LIKE '%$recherche%')"; // Selectionne tout les articles publiés
     $exe = mysqli_query($bdd, $requete); // Execute la requête
-    $result = mysqli_fetch_all($exe, MYSQLI_ASSOC) or die(mysqli_error($bdd));
-    return $result;
+    while ($result = mysqli_fetch_assoc($exe)) {
+        $resultats[] = $result; // On le rempli avec les résultats.
+    }
+    return $resultats;
 }
 
 function articleById($id, $bdd) {
     $requete = "SELECT id, titre, texte, DATE_FORMAT(date,'%d/%m/%Y') as date_fr, publie FROM articles where id = '$id'";
     $exe = mysqli_query($bdd, $requete); // Execute la requête
-    $result = mysqli_fetch_all($exe, MYSQLI_ASSOC) or die(mysqli_error($bdd));
-    return $result;
+    while ($result = mysqli_fetch_assoc($exe)) {
+        $resultats[] = $result; // On le rempli avec les résultats.
+    }
+    return $resultats;
 }
 
 function selectUser($mail, $password, $bdd) {
@@ -58,8 +62,10 @@ function selectCommentaire($idarticle, $bdd) {
     $requete = "SELECT auteur, DATE_FORMAT(date,'%d/%m/%Y') as date ,text , id_article FROM commentaires where id_article = '$idarticle'"; //Requête de sélection utilisateur
     $exe = mysqli_query($bdd, $requete); // Execute la requête
     if (mysqli_num_rows($exe) >= 1) {
-        $result = mysqli_fetch_all($exe, MYSQLI_ASSOC) or die(mysqli_error($bdd));
-        return $result;
+        while ($result = mysqli_fetch_assoc($exe)) {
+            $resultats[] = $result; // On le rempli avec les résultats.
+        }
+        return $resultats;
     } else {
         return "Aucun commentaire";
     }
@@ -109,8 +115,8 @@ function deleteArticle($id, $bdd) {
 }
 
 function deleteCommentaire($idArticle, $bdd) {
-     $requete = "DELETE FROM commentaires WHERE id_article = $idArticle";
-     $exe = mysqli_query($bdd, $requete); // Execute la requête   
+    $requete = "DELETE FROM commentaires WHERE id_article = $idArticle";
+    $exe = mysqli_query($bdd, $requete); // Execute la requête   
 }
 
 ?>
